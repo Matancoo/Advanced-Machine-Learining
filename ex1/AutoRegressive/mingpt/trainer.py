@@ -74,8 +74,6 @@ class Trainer:
         )
 
         model.train()
-        total_epochs = config.total_epochs
-        cur_epoch = 1
         self.iter_num = 0
         self.iter_time = time.time()
         data_iter = iter(train_loader)
@@ -107,7 +105,5 @@ class Trainer:
             self.iter_time = tnow
 
             # termination conditions
-            if curr_epoch == total_epochs:
-                break
             if config.max_iters is not None and self.iter_num >= config.max_iters:
                 break
