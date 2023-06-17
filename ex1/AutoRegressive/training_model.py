@@ -37,6 +37,7 @@ def get_config():
     C.trainer = Trainer.get_default_config()
     C.trainer.learning_rate = 5e-4 # the model we're using is so small that we can go a bit faster
     C.trainer.losses = []
+    C.trainer.total_epochs = 10
 
     return C
 
