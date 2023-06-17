@@ -8,6 +8,7 @@ import sys
 import torch
 from torch.utils.data import Dataset
 from torch.utils.data.dataloader import DataLoader
+import torch.nn.functional as F
 
 from mingpt.model import GPT
 from mingpt.trainer import Trainer
@@ -79,6 +80,33 @@ class TextDataset(Dataset):
         y = chunk[1:].clone().detach().long()  # token to predict next (shifted chunk by 1)
         return x, y
 
+def invert_model(model, tokenizer, target_sentence,config,training_steps,lr):
+    model.eval()
+    device = next(model.parameters()).device
+
+    tok_target_sentence = tokenizer(target_sentence)
+    tok_target_sentence = tok_target_sentence.to(device)
+    batch, block_size, n_embd = 1, len(tok_target_sentence[0]), config.model.n_embd
+
+    input_vector = torch.randn((batch, block_size, n_embd), requires_grad=True,device=device)
+    optimizer = torch.optim.Adam([input_vector], lr=lr)
+    # inversion_process
+    for _ in range(training_steps):
+        logits  = model.token_embb_bypass_forward(input_vec=input_vector)
+
+        # compute the loss
+        loss = F.cross_entropy(logits.view(-1, logits.size(-1)), tok_target_sentence.view(-1), ignore_index=-1)
+
+        # backpropagate the gradients
+        loss.backward()
+
+        # update the input vector
+        optimizer.step()
+
+        # zero the gradients
+        optimizer.zero_grad()
+    return input_vector
+
 # -----------------------------------------------------------------------------
 
 if __name__ == '__main__':
@@ -129,8 +157,30 @@ if __name__ == '__main__':
     trainer.set_callback('on_batch_end', batch_end_callback)
 
     # run the optimization
-    trainer.run()
-
+    # trainer.run()
     # save model
     save_path = os.path.join(config.system.work_dir, "model.pt")
     torch.save(model.state_dict(), save_path)
+
+    #
+    # target_sentence = "I am a little squirrel holding a walnut"
+    # output_vector = invert_model(model, tokenizer, target_sentence, config, training_steps=1000, lr=0.1)
+    # # check if the output vector is the same as the target sentence
+    # output_logits = model.token_embb_bypass_forward(output_vector)
+    # output_token_indices = torch.argmax(output_logits,dim=-1)
+    # output_sentence = tokenizer.decode(output_token_indices[0])
+    # print(output_sentence)
+
+    # Q3
+    # ar_generation(model, tokenizer, config, target_sentence, 1000, 0.1)
+    model.eval()
+    sentence = "I am a squirrel holding a walnut and I love it"
+    tok_sentence = tokenizer(sentence)
+    tok_sentence = tok_sentence#.to(device)
+    #TODO: check that step size is good/
+    #TODO: use the debug_tokenize function to see data
+    #TODO: see chatGPT explainiation
+    #TODO finish this fucking exercises.
+    #TODO: name files correctly and create two main files as specidied
+    #TODO: pass all questions answers to separate files
+    output_idx = model.generate(tok_sentence, 1, temperature=1.0, do_sample=True, top_k=10)[0]

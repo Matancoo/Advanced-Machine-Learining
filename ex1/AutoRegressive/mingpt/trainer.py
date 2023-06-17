@@ -91,7 +91,7 @@ class Trainer:
             # forward the model
             logits, self.loss = model(x, y)
             # append_losses
-            config.losses.append(self.loss.item()) #TODO:check if append each time slows down model
+            config.losses.append(self.loss.item()) #TODO: append each time slows down model
             # backprop and update the parameters
             model.zero_grad(set_to_none=True)
             self.loss.backward()

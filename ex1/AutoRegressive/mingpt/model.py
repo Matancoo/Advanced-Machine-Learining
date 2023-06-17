@@ -87,10 +87,10 @@ class Block(nn.Module):
         m = self.mlp
         self.mlpf = lambda x: m.dropout(m.c_proj(m.act(m.c_fc(x)))) # MLP forward
 
-    def forward(self, x):
-        x = x + self.attn(self.ln_1(x))
-        x = x + self.mlpf(self.ln_2(x))
-        return x
+    def forward(self, x,return_attention=False):
+        attn_scores = x + self.attn(self.ln_1(x))
+        x = attn_scores + self.mlpf(self.ln_2(attn_scores))
+        return x, attn_scores if return_attention else x
 
 class GPT(nn.Module):
     """ GPT Language Model """
@@ -216,7 +216,7 @@ class GPT(nn.Module):
         optimizer = torch.optim.AdamW(optim_groups, lr=train_config.learning_rate, betas=train_config.betas)
         return optimizer
 
-    def forward(self, idx, targets=None):
+    def forward(self, idx, targets=None,return_attention=False,block_num=None):
         device = idx.device
         b, t = idx.size()
         assert t <= self.block_size, f"Cannot forward sequence of length {t}, block size is only {self.block_size}"
@@ -226,8 +226,21 @@ class GPT(nn.Module):
         tok_emb = self.transformer.wte(idx) # token embeddings of shape (b, t, n_embd)
         pos_emb = self.transformer.wpe(pos) # position embeddings of shape (1, t, n_embd)
         x = self.transformer.drop(tok_emb + pos_emb)
-        for block in self.transformer.h:
-            x = block(x)
+        attention = None
+
+        if return_attention:
+            for i,block in enumerate(self.transformer.h):
+                if block_num is not None and i == block_num:
+                    x,attn = block(x,return_attention=True)
+                    attention = attn
+                else:
+                    x = block(x)
+
+        else:
+            for block in self.transformer.h:
+                x = block(x)
+
+
         x = self.transformer.ln_f(x)
         logits = self.lm_head(x)
 
@@ -236,8 +249,26 @@ class GPT(nn.Module):
         if targets is not None:
             loss = F.cross_entropy(logits.view(-1, logits.size(-1)), targets.view(-1), ignore_index=-1)
 
-        return logits, loss
+        if return_attention:
+            return logits, loss, attention
+        else:
+            return logits, loss
+    def token_embb_bypass_forward(self,input_vec):
+        device = input_vec.device
+        b, t , _=input_vec.size()
+        assert t <= self.block_size, f"Cannot forward sequence of length {t}, block size is only {self.block_size}"
+        pos = torch.arange(0, t, dtype=torch.long, device=device).unsqueeze(0) # shape (1, t)
 
+        # forward the GPT model itself
+        tok_emb = input_vec # of shape (b, t, n_embd)
+        pos_emb = self.transformer.wpe(pos) # position embeddings of shape (1, t, n_embd)
+        x = self.transformer.drop(tok_emb + pos_emb)
+        for block in self.transformer.h:
+            x = block(x)
+        x = self.transformer.ln_f(x)
+        logits = self.lm_head(x)
+
+        return logits
     @torch.no_grad()
     def generate(self, idx, max_new_tokens, temperature=1.0, do_sample=False, top_k=None):
         """
@@ -245,11 +276,14 @@ class GPT(nn.Module):
         the sequence max_new_tokens times, feeding the predictions back into the model each time.
         Most likely you'll want to make sure to be in model.eval() mode of operation for this.
         """
-        for _ in range(max_new_tokens):
+        for step in range(max_new_tokens):
             # if the sequence context is growing too long we must crop it at block_size
             idx_cond = idx if idx.size(1) <= self.block_size else idx[:, -self.block_size:]
-            # forward the model to get the logits for the index in the sequence
-            logits, _ = self(idx_cond)
+            if step == 0: #TODO: chekc right
+                logits,_,attention_scores = self(idx_cond, return_attention=True,block_num=0)
+            else:
+                logits,_ = self(idx_cond, return_attention=True,block_num=0)
+
             # pluck the logits at the final step and scale by desired temperature
             logits = logits[:, -1, :] / temperature
             # optionally crop the logits to only the top k options
@@ -265,5 +299,7 @@ class GPT(nn.Module):
                 _, idx_next = torch.topk(probs, k=1, dim=-1)
             # append sampled index to the running sequence and continue
             idx = torch.cat((idx, idx_next), dim=1)
-
-        return idx
+        if attention_scores is not None:
+            # Average the attention scores over the different attention heads
+            attention_scores = attention_scores.mean(dim=1) #TODO: check the right dim
+        return idx, attention_scores
