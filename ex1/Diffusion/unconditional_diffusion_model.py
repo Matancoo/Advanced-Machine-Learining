@@ -66,17 +66,20 @@ if __name__ == '__main__':
     # Q2
     training_samples = sample_datapoints(a=-1, b=1, samples_num=TRAINING_SAMPLES_COUNT, samples_dim=SAMPLES_DIM)
     dataloader = DataLoader(training_samples, batch_size=DENOISER_TRAINING_BATCH_SIZE, shuffle=True)
-    denoiser = DiffusionDenoiser(time_steps=1000)
+    denoiser = DiffusionDenoiser(time_steps=1000,
+                                 time_embedding=16,
+                                 samples_dim=SAMPLES_DIM)
+
     optimizer = torch.optim.Adam(denoiser.parameters(), lr=DENOISER_TRAINING_LEARNING_RATE)
-    train_losses = denoiser.train_denoiser(dataloader,optimizer,)
-    denoiser.save_model(path='denoiser.pt')
+    train_losses = denoiser.train_denoiser(dataloader,optimizer,exp_scheduler)
+
     df1 = pd.DataFrame(data={'training_step': range(1, len(train_losses) + 1), 'loss': train_losses})
     fig1 = px.line(df1, x='training_step', y='loss',
                   title='loss function over the training batches of the denoiser')
     fig1.show()
 
     # Q3
-    denoiser = DiffusionDenoiser(time_steps=1000,denoiser_path="/Users/matancohen/Desktop/AML/denoiser_models/denoiser.pt")
+    denoiser = DiffusionDenoiser(time_steps=1000,denoiser_path="/Users/matancohen/Desktop/AML/model/denoiser.pt")
     generate_samples_and_grid(denoiser,exp_scheduler,samples_num=128,samples_dim=2)
 
     # Q4
@@ -85,7 +88,8 @@ if __name__ == '__main__':
     resulting_points = [fixed_point[0]]
     for time_steps in time_steps_variations[1:]:
         denoiser = DiffusionDenoiser(time_steps=time_steps,
-                                     denoiser_path=MODEL_PATH)
+                                     time_embedding=16,
+                                     samples_dim=SAMPLES_DIM)
         new_points = denoiser.DDIM_sampling(exp_scheduler, samples_num=128, samples_dim=2, fixed_point=fixed_point)
         resulting_points.append(new_points[0])
 
@@ -126,7 +130,9 @@ if __name__ == '__main__':
     samples = []
 
     for i in range(10):
-        denoiser = DiffusionDenoiser(time_steps=1000,denoiser_path=MODEL_PATH)
+        denoiser = DiffusionDenoiser(time_steps=1000,
+                                     time_embedding=16,
+                                     samples_dim=SAMPLES_DIM)
         sample = denoiser.DDIM_sampling(exp_scheduler, samples_num=1, samples_dim=2, fixed_point=initial_noise)
         samples.append(sample.detach().numpy())
 

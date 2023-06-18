@@ -79,7 +79,7 @@ cond_denoiser = Cond_DiffusionDenoiser(time_steps=1000,
                                        samples_dim=SAMPLES_DIM,
                                        num_classes=len(cond_data.class_dict),
                                        class_embedding_size=16,
-                                       denoiser_path='denoiser_models/denoiser_conditional.pt')
+                                       denoiser_path='model/denoiser_conditional.pt')
 z = cond_denoiser.DDIM_sampling(exp_scheduler,
                                 samples_num=1000,
                                 samples_dim=2,
