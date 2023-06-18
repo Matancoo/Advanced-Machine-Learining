@@ -282,7 +282,7 @@ class BPETokenizer:
 if __name__ == '__main__':
 
     # here is an encoding example
-    text = "Hello!! I'm Andrej Karpathy. It's 2022. w00t :D 🤗"
+    text = "I am a squirrel holding a ball and I love it"
     e = get_encoder()
     r = e.encode_and_show_work(text)
 

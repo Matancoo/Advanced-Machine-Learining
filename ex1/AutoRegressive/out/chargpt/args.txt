@@ -1,1 +1,0 @@
-/Users/matancohen/Desktop/AML/ex1/AutoRegressive/training_model.py

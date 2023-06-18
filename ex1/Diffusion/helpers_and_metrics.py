@@ -3,13 +3,12 @@ import matplotlib.pyplot as plt
 import torch
 import numpy as np
 import pandas as pd
-import plotly.graph_objects as go
 import torch.nn as nn
 from torch.optim import Adam
 from torch.utils.data import DataLoader
+import plotly.graph_objects as go
 import plotly.express as px
 from plotly.subplots import make_subplots
-from plotly import graph_objects as go
 from torch.utils.data import Dataset
 def sample_datapoints(a: int, b: int, samples_num: int, samples_dim: int):
     '''

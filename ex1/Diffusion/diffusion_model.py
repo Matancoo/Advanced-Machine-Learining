@@ -1,6 +1,5 @@
-######################################################## IMPORTS ######################################################
 
-from ex1.helpers_and_metrics import *
+from ex1.Diffusion.helpers_and_metrics import *
 
 # Setting reproducibility
 SEED = 379
@@ -15,13 +14,8 @@ DENOISER_TRAINING_EPOCHS = 1000
 DENOISER_TRAINING_BATCH_SIZE = 128
 
 
-# TODO: define square?
-
 # time_steps->T
 # scheduler->σ
-
-################################################# FUNCTIONS ###########################################################
-
 
 #######################################################################################################################
 class Denoiser(nn.Module):

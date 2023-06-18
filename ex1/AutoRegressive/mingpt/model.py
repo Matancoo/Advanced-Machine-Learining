@@ -68,7 +68,7 @@ class CausalSelfAttention(nn.Module):
 
         # output projection
         y = self.resid_dropout(self.c_proj(y))
-        return y
+        return y,att
 
 class Block(nn.Module):
     """ an unassuming Transformer block """
@@ -87,10 +87,10 @@ class Block(nn.Module):
         m = self.mlp
         self.mlpf = lambda x: m.dropout(m.c_proj(m.act(m.c_fc(x)))) # MLP forward
 
-    def forward(self, x,return_attention=False):
-        attn_scores = x + self.attn(self.ln_1(x))
-        x = attn_scores + self.mlpf(self.ln_2(attn_scores))
-        return x, attn_scores if return_attention else x
+    def forward(self, x):
+        x,attn_scores = self.attn(self.ln_1(x))
+        x = x + self.mlpf(self.ln_2(x))
+        return x, attn_scores
 
 class GPT(nn.Module):
     """ GPT Language Model """
@@ -231,14 +231,14 @@ class GPT(nn.Module):
         if return_attention:
             for i,block in enumerate(self.transformer.h):
                 if block_num is not None and i == block_num:
-                    x,attn = block(x,return_attention=True)
+                    x,attn = block(x)
                     attention = attn
                 else:
-                    x = block(x)
+                    x,_ = block(x)
 
         else:
             for block in self.transformer.h:
-                x = block(x)
+                x,_= block(x)
 
 
         x = self.transformer.ln_f(x)
@@ -279,10 +279,10 @@ class GPT(nn.Module):
         for step in range(max_new_tokens):
             # if the sequence context is growing too long we must crop it at block_size
             idx_cond = idx if idx.size(1) <= self.block_size else idx[:, -self.block_size:]
-            if step == 0: #TODO: chekc right
-                logits,_,attention_scores = self(idx_cond, return_attention=True,block_num=0)
+            if step == 0:
+                logits,_,attention_scores = self(idx_cond, return_attention=True,block_num=len(self.transformer.h)-1)
             else:
-                logits,_ = self(idx_cond, return_attention=True,block_num=0)
+                logits,_ = self(idx_cond, return_attention=False,block_num=0)
 
             # pluck the logits at the final step and scale by desired temperature
             logits = logits[:, -1, :] / temperature
@@ -299,7 +299,4 @@ class GPT(nn.Module):
                 _, idx_next = torch.topk(probs, k=1, dim=-1)
             # append sampled index to the running sequence and continue
             idx = torch.cat((idx, idx_next), dim=1)
-        if attention_scores is not None:
-            # Average the attention scores over the different attention heads
-            attention_scores = attention_scores.mean(dim=1) #TODO: check the right dim
         return idx, attention_scores
