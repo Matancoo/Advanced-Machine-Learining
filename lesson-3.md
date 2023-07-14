@@ -1,35 +1,31 @@
 **Questions**
+1. What are the primary challenges in the domain of discriminative models?
 
-- What are the primary challenges in the domain of discriminative models?
+2. How do generative models differ in their objectives compared to discriminative models?
 
-- How do generative models differ in their objectives compared to discriminative models?
+3. What are the three main uses of generative models?
 
-- What are the three main uses of generative models?
+4. Explain the concept of conditional generative models.
 
-- Explain the concept of conditional generative models.
+5. What are some examples of the different paradigms for probability estimation in the field of machine learning?
 
-- What are some examples of the different paradigms for probability estimation in the field of machine learning?
+6. In what context is language modeling used as an example in this text?
 
-- In what context is language modeling used as an example in this text?
+7. How are transformer models used in modern language models?
 
-- How are transformer models used in modern language models?
+8. What critical decisions regarding resource allocation are mentioned for a manager overseeing the development of language models?
 
-- What critical decisions regarding resource allocation are mentioned for a manager overseeing the development of language models?
+9. How can neural scaling laws be utilized in managing resources for language model development?
 
-- How can neural scaling laws be utilized in managing resources for language model development?
+10. What does the Power Law concept represent?
 
-- What does the Power Law concept represent?
+11. According to past research, what matters most in terms of computational power for model training?
 
-- According to past research, what matters most in terms of computational power for model training?
+12. What observations have been made regarding larger models and their training steps?
 
-- What observations have been made regarding larger models and their training steps?
+13. In what capacity do language models serve as efficient density estimators?
 
-- In what capacity do language models serve as efficient density estimators?
-
-- Why might language models not be appropriate for all types of data?
-
-
-
+14. Why might language models not be appropriate for all types of data?
 
 
 
@@ -89,30 +85,31 @@
 
 
 **Answers**
-The primary challenges in the domain of discriminative models include the selection of the appropriate architecture, tuning of hyperparameters, and the process of data collection and labeling.
+1. The primary challenges in the domain of discriminative models include the selection of the appropriate architecture, tuning of hyperparameters, and the process of data collection and labeling.
 
-Generative models aim to create representations of the world rather than just categorize it, as discriminative models do. For instance, while a discriminative model would determine the likelihood of a given image containing a dog, a generative model assesses how likely it is for the image to depict a dog.
+2. Generative models aim to create representations of the world rather than just categorize it, as discriminative models do. For instance, while a discriminative model would determine the likelihood of a given image containing a dog, a generative model assesses how likely it is for the image to depict a dog.
 
-The three main uses of generative models are estimation (finding a density function Q that closely approximates P), sampling (drawing samples directly from P), and point estimation (calculating the probability density of a specific sample x).
+3. The three main uses of generative models are estimation (finding a density function Q that closely approximates P), sampling (drawing samples directly from P), and point estimation (calculating the probability density of a specific sample x).
 
-Conditional generative models shift the focus from P(x) to P(x|y), where the conditioning could be based on various factors such as class labels or text prompts.
+4. Conditional generative models shift the focus from P(x) to P(x|y), where the conditioning could be based on various factors such as class labels or text prompts.
 
-Several paradigms for probability estimation exist in this field, including Auto-regressive/Non-AR, Variational, Adversarial, Flow-based, and Score-based/Diffusion models.
+5. Several paradigms for probability estimation exist in this field, including Auto-regressive/Non-AR, Variational, Adversarial, Flow-based, and Score-based/Diffusion models.
 
-Language modeling is used as an example in terms of sampling from an Auto-Regressive (AR) Model in this text.
+6. Language modeling is used as an example in terms of sampling from an Auto-Regressive (AR) Model in this text.
 
-Modern language models leverage large transformer models for enhanced expressiveness and to manage larger context sizes. The implementation of these transformer models is further explored in the context of machine translation tasks.
+7. Modern language models leverage large transformer models for enhanced expressiveness and to manage larger context sizes. The implementation of these transformer models is further explored in the context of machine translation tasks.
 
-Managers overseeing the development of language models need to make critical decisions regarding resource allocation, which could involve investing in architectural and optimization research, data collection, enhanced computing power, or expanded memory.
+8. Managers overseeing the development of language models need to make critical decisions regarding resource allocation, which could involve investing in architectural and optimization research, data collection, enhanced computing power, or expanded memory.
 
-Neural scaling laws can accurately predict performance, and thus serve as valuable guides for making investment decisions in the development of language models.
+9. Neural scaling laws can accurately predict performance, and thus serve as valuable guides for making investment decisions in the development of language models.
 
-The Power Law concept is a straightforward way of representing relationships between variables, offering scale invariance.
+10. The Power Law concept is a straightforward way of representing relationships between variables, offering scale invariance.
 
-According to past research, what matters most in terms of computational power for model training is the total computational power, rather than the specific allocation to either depth or width.
+11. According to past research, what matters most in terms of computational power for model training is the total computational power, rather than the specific allocation to either depth or width.
 
-Observations have been made that larger models can reach a given loss with fewer training steps.
+12. Observations have been made that larger models can reach a given loss with fewer training steps.
 
-Language models, though simple, serve as efficient density estimators that can be either conditional or unconditional.
+13. Language models, though simple, serve as efficient density estimators that can be either conditional or unconditional.
 
-Language models may not be appropriate for all types of data because their effectiveness is heavily dependent on the complexity of the data and the specific task they are being used for. They might not handle well some specific types of data that require a different approach or modeling technique.
+14. Language models may not be appropriate for all types of data because their effectiveness is heavily dependent on the complexity of the data and the specific task they are being used for. They might not handle well some specific types of data that require a different approach or modeling technique.
+ta that require a different approach or modeling technique.
