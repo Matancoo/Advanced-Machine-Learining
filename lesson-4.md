@@ -1,7 +1,7 @@
-Lesson-4
+
 **Week 4: Variational Models: Limitations of Auto-Regressive (AR) Models**
 
-- Last week we discussed auto-regressive models. They perform well for shorter sequences like text. However, they have a few limitations:
+  - Last week we discussed auto-regressive models. They perform well for shorter sequences like text. However, they have a few limitations:
   - Inference runtime is linear in sequence length (O(n)).
   - They require some sequence ordering.
   - They fail to exploit low rank (discussed in the next slide).
@@ -93,7 +93,7 @@ Lesson-4
   
 **VAE Optimization in Practice**
 
-- To simplify the maths, we often:
+  - To simplify the maths, we often:
   - Choose p(z) = N(0,I).
   - Estimate the expectation using a single normal sample.
   
