@@ -73,7 +73,32 @@ Let's discuss some of their key characteristics:
 
 The choice of the appropriate probability metric depends on the specific context, including the characteristics of the data, the generative model, and the computational resources available.
 
+Here's a comparative overview of the different probability divergence measures, including their advantages, disadvantages, and specific learning paradigms where one may be used over the others:
 
+1. **Jensen-Shannon (JS) Divergence**
+    - *Advantages:* Symmetric, always finite, and has a value of 0 if and only if the two distributions being compared are the same.
+    - *Disadvantages:* It doesn't provide a gradient everywhere, causing issues in model training.
+    - *Use Cases:* JS divergence is widely used in training Generative Adversarial Networks (GANs), where the goal is to minimize the divergence between the real and generated data distributions.
+
+2. **Kullback-Leibler (KL) Divergence**
+    - *Advantages:* Directly measures how one probability distribution diverges from a second, expected one.
+    - *Disadvantages:* Asymmetry and can become infinite if there are points where the second distribution (Q) is zero and the first distribution (P) is non-zero.
+    - *Use Cases:* KL divergence is commonly used in many machine learning tasks involving probabilistic models, such as in variational autoencoders (VAEs), where the goal is to learn the parameters of the underlying data distribution.
+
+3. **Total Variation (TV) Distance**
+    - *Advantages:* Symmetric, intuitive, and its value lies between 0 and 1.
+    - *Disadvantages:* Only considers the maximum difference in probabilities between outcomes, so it can be insensitive to changes in the distribution that don't affect the maximum difference.
+    - *Use Cases:* TV distance is often used in statistical tests, image processing, and computer vision tasks for its robustness against noise.
+
+4. **Wasserstein (Earth Mover's) Distance**
+    - *Advantages:* Robust to changes in the location of the distribution and provides meaningful gradients almost everywhere.
+    - *Disadvantages:* Computationally intensive to calculate.
+    - *Use Cases:* This distance measure is particularly useful for training GANs, as exemplified by the Wasserstein GAN (WGAN), due to its property of providing stable and meaningful gradients.
+
+5. **Integral Probability Metrics (IPM)**
+    - *Advantages:* Capable of capturing differences between distributions in a comprehensive manner, taking both near and far samples into account.
+    - *Disadvantages:* Can be complex to implement and require careful choice of the function class for supremum.
+    - *Use Cases:* IPMs are often used in machine learning tasks involving generative models and two-sample tests. The Wasserstein distance, an example of an IPM, is popular in GANs due to its robustness against changes in data distribution.
 
 
 - **Adversarial Models or Integral Probability Measures:**
