@@ -1,5 +1,4 @@
-LESSON 2:
-Here is the bulleted summary of the presentation:
+
 
 **Definition and Basics of Deep Learning**
 - Deep Learning is about constructing networks of parameterized functional modules & training them from examples using gradient-based optimization.
