@@ -1,41 +1,42 @@
-** QUESTIONS:
-What are the major limitations of auto-regressive models?
+** QUESTIONS:**
 
-Can you explain the concept of "Low-Rank Manifold Assumption" and how it relates to high-dimensional data?
+- What are the major limitations of auto-regressive models?
 
-What are the three characteristics we want our function p(x) to possess in the context of a set of training data?
+- Can you explain the concept of "Low-Rank Manifold Assumption" and how it relates to high-dimensional data?
 
-Explain the role of the latent variable z in the representation of data.
+- What are the three characteristics we want our function p(x) to possess in the context of a set of training data?
 
-How does a generator function G transform a latent variable z into a distribution over images x?
+- Explain the role of the latent variable z in the representation of data.
 
-What are the two main challenges in modeling the distribution of x under our model?
+- How does a generator function G transform a latent variable z into a distribution over images x?
 
-What are the problems we might encounter when trying to implement importance sampling and Monte Carlo estimation?
+- What are the two main challenges in modeling the distribution of x under our model?
 
-Why might it be beneficial to propose another probability distribution Q(x) for the sampling process?
+- What are the problems we might encounter when trying to implement importance sampling and Monte Carlo estimation?
 
-Why is the posterior typically considered the best proposal distribution?
+- Why might it be beneficial to propose another probability distribution Q(x) for the sampling process?
 
-Why is it practically infeasible to compute the posterior?
+- Why is the posterior typically considered the best proposal distribution?
 
-Explain the process of variational approximation in practice. Why do we typically choose a Gaussian?
+- Why is it practically infeasible to compute the posterior?
 
-How do we estimate the likelihood of an entire dataset?
+- Explain the process of variational approximation in practice. Why do we typically choose a Gaussian?
 
-What is the goal of maximum-likelihood (ML) estimation of G?
+- How do we estimate the likelihood of an entire dataset?
 
-Can you elaborate on the re-parameterization trick and the concept of amortized inference?
+- What is the goal of maximum-likelihood (ML) estimation of G?
 
-What are the typical choices made to simplify VAE optimization in practice?
+- Can you elaborate on the re-parameterization trick and the concept of amortized inference?
 
-Why do we need to estimate data likelihood to find the best generator G?
+- What are the typical choices made to simplify VAE optimization in practice?
 
-How can we use VAE for point estimation?
+- Why do we need to estimate data likelihood to find the best generator G?-
 
-What is the key difference between a Conditional VAE (cVAE) and a standard VAE?
+- How can we use VAE for point estimation?
 
-In summary, what are the main advantages of variational inference and the use of VAEs?
+- What is the key difference between a Conditional VAE (cVAE) and a standard VAE?
+
+- In summary, what are the main advantages of variational inference and the use of VAEs?
 
 
 **Week 4: Variational Models: Limitations of Auto-Regressive (AR) Models**
