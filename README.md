@@ -1,4 +1,6 @@
 # Advanced-Machine-Learning
+Hebrew University of Jerusalem - Prof Yedid Hochen
+
 ## Course description:
 The course will teach the core machine learning principles behind some of the most exciting recent progress in AI e.g. Text-to-Image, ChatGPT. While specific deep learning technologies change constantly, the core ML principles change much more slowly making their study very profitable. The course will give students an understanding of the principles, as well as the exciting recent applications. It will provide both the mathematical formalism and the intuition for the principles. The course will also develop practical understanding through two practical exercises.
 
