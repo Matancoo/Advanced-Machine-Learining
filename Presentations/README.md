@@ -1,2 +1,2 @@
-These are presentations of each lesson in the course. (Professor Yedid Hoshen-HUJI)
+These are presentation slides of each lesson in the course. (Professor Yedid Hoshen-HUJI)
 
