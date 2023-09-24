@@ -6,8 +6,8 @@ from mingpt.trainer import Trainer
 from mingpt.utils import set_seed, setup_logging, CfgNode as CN
 from mingpt.bpe import BPETokenizer
 # -----------------------------------------------------------------------------
-DATASET_PATH = "/ex1/AutoRegressive/alice_in_wonderland.txt"
-MODEL_PATH = "/ex1/AutoRegressive/model/GPT2.pt"
+DATASET_PATH = "/Project1/AutoRegressive/alice_in_wonderland.txt"
+MODEL_PATH = "/Project1/AutoRegressive/model/GPT2.pt"
 # -----------------------------------------------------------------------------
 
 def get_config():
